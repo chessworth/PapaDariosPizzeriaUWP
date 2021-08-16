@@ -1,0 +1,76 @@
+﻿<Page
+    x:Class="FinalExamGursimranSinghMudhar.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FinalExamGursimranSinghMudhar"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="Montserrat">
+    <Page.Background>
+        <ImageBrush Stretch="None" ImageSource="Assets/bg.png"/>
+    </Page.Background>
+    <StackPanel x:Name="Pages">
+        <NavigationView x:Name="nav" PaneDisplayMode="Top" Height="100px" Margin="60,10,60,0" Visibility="Visible" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" Background="#F2F2F3" Foreground="#FC922C">
+
+        </NavigationView>
+        <StackPanel x:Name="login" Orientation="Horizontal" Visibility="visible" Margin="0,110,0,0" >
+            <Grid Visibility="collapsed"
+                x:Name="loginGrid"
+            Height="460"
+                Width="500"
+                HorizontalAlignment="Center"
+                Margin="390,0,390,0"
+        Background="#DDFFFFFF">
+                <TextBlock VerticalAlignment="Top" Margin="0,101,175,0" Text="Username:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                <TextBox x:Name="username" Width="200" Height="30" VerticalAlignment="Top" Margin="100,100,0,0"></TextBox>
+                <TextBlock VerticalAlignment="Top" Margin="0,176,175,0" Text="Password:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                <PasswordBox x:Name="password" Width="200" Height="30" VerticalAlignment="Top" Margin="100,175,0,0"></PasswordBox>
+                <Button x:Name="loginBtn" Content="Login" VerticalAlignment="Top" Margin="0,275,0,0" HorizontalAlignment="Center" Click="login_submit" Width="200"></Button>
+                <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,325,0,0" Text="Don't Have an account yet?" Foreground="Black"></TextBlock>
+                <Button x:Name="registerView" Click="registerView_Click" Content="Register" VerticalAlignment="Top" Margin="0,365,0,0" HorizontalAlignment="Center" Width="200"></Button>
+            </Grid>
+            <Grid Visibility="Visible"
+                x:Name="registerGrid"
+            Height="460"
+                Width="500"
+                HorizontalAlignment="Center"
+                Margin="390,0,390,0"
+        Background="#DDFFFFFF">
+                <TextBlock VerticalAlignment="Top" Margin="0,51,175,0" Text="Full Name::" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                <TextBox x:Name="firstname" Width="100" Height="30" VerticalAlignment="Top" Margin="0,50,0,0" PlaceholderText="John"></TextBox>
+                <TextBox x:Name="lastname" Width="100" Height="30" VerticalAlignment="Top" Margin="200,50,0,0" PlaceholderText="Smith"></TextBox>
+                <TextBlock VerticalAlignment="Top" Margin="0,101,175,0" Text="Username:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                <TextBox x:Name="newusername" Width="200" Height="30" VerticalAlignment="Top" Margin="100,100,0,0" PlaceholderText="JohnSmith225"></TextBox>
+                <TextBlock VerticalAlignment="Top" Margin="0,151,175,0" Text="Password:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                <PasswordBox x:Name="newpassword" Width="200" Height="30" VerticalAlignment="Top" Margin="100,150,0,0" PlaceholderText="******************"></PasswordBox>
+                <TextBlock VerticalAlignment="Top" Margin="0,201,200,0" Text="Confirm Password:" FontSize="16" Width="265" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                <PasswordBox x:Name="newpasswordconfirm" Width="200" Height="30" VerticalAlignment="Top" Margin="100,200,0,0" PlaceholderText="******************"></PasswordBox>
+                <Button x:Name="registerbtn" Content="Register" VerticalAlignment="Top" Margin="0,275,0,0" HorizontalAlignment="Center" Click="register_submit" Width="200"></Button>
+                <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,325,0,0" Text="Already have an account?" Foreground="Black"></TextBlock>
+                <Button x:Name="loginview" Click="loginView_Click" Content="Login" VerticalAlignment="Top" Margin="0,365,0,0" HorizontalAlignment="Center" Width="200"></Button>
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="home" Visibility="Collapsed">
+            <Grid
+            Height="560"
+        Background="#88FFFFFF"
+        Margin="60, 0, 60, 50">
+            </Grid>
+        </StackPanel>
+    </StackPanel>
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#87A417"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#87A417"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+</Page>
