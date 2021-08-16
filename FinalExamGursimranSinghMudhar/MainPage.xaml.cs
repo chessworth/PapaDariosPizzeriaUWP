@@ -72,6 +72,8 @@ namespace FinalExamGursimranSinghMudhar
                     admin = (bool)data[5];
                     LoggedIn = true;
                     user = curLogged;
+                    username.Text = "";
+                    password.Password = "";
                     //TODO : Redirect to home
                 }
                 else
@@ -97,11 +99,18 @@ namespace FinalExamGursimranSinghMudhar
         {
             loginGrid.Visibility = Visibility.Collapsed;
             registerGrid.Visibility = Visibility.Visible;
+            username.Text = "";
+            password.Password = "";
         }
         private void loginView_Click(object sender, RoutedEventArgs e)
         {
             registerGrid.Visibility = Visibility.Collapsed;
             loginGrid.Visibility = Visibility.Visible;
+            newpassword.Password = "";
+            newpasswordconfirm.Password = "";
+            newusername.Text = "";
+            firstname.Text = "";
+            lastname.Text = "";
         }
         private async void register_submit(object sender, RoutedEventArgs e)
         {
@@ -135,23 +144,15 @@ namespace FinalExamGursimranSinghMudhar
                 cmd.Parameters.AddWithValue("@2", login);
                 cmd.Parameters.AddWithValue("@3", pw);
                 conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
+                if(cmd.ExecuteNonQuery() > 0)
                 {
-                    User curLogged = new User();
-                    IDataReader data = (IDataReader)reader;
-                    curLogged.UserID = (int)data[0];
-                    curLogged.Fname = data[1].ToString();
-                    curLogged.Lname = data[2].ToString();
-                    curLogged.Username = data[3].ToString();
-                    admin = (bool)data[5];
-                    LoggedIn = true;
-                    user = curLogged;
-                    //TODO : Redirect to home
+                    MessageDialog dialog = new MessageDialog("You've been registered Succesfully! Login to continue.");
+                    await dialog.ShowAsync();
+                    loginView_Click(sender, e);
                 }
                 else
                 {
-                    MessageDialog dialog = new MessageDialog("Invalid Username or Password");
+                    MessageDialog dialog = new MessageDialog("Registration error. Try again or contact an admin.");
                     await dialog.ShowAsync();
                 }
 
