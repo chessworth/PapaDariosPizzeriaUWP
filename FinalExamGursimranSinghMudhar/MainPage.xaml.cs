@@ -36,7 +36,6 @@ namespace FinalExamGursimranSinghMudhar
         public MainPage()
         {
             this.InitializeComponent();
-
         }
         //methods for password decode/encode (Stack Overflow + .NET DOCS - System.Text)
         public static string Base64Encode(string plainText)
@@ -47,7 +46,7 @@ namespace FinalExamGursimranSinghMudhar
         {
             return Encoding.UTF8.GetString(Convert.FromBase64String(base64EncodedData));
         }
-        private async void login_submit(object sender, RoutedEventArgs e)
+        private async void Login_submit(object sender, RoutedEventArgs e)
         {
             string login = username.Text;
             string pw = Base64Encode(password.Password);
@@ -95,14 +94,14 @@ namespace FinalExamGursimranSinghMudhar
             }
         }
 
-        private void registerView_Click(object sender, RoutedEventArgs e)
+        private void RegisterView_Click(object sender, RoutedEventArgs e)
         {
             loginGrid.Visibility = Visibility.Collapsed;
             registerGrid.Visibility = Visibility.Visible;
             username.Text = "";
             password.Password = "";
         }
-        private void loginView_Click(object sender, RoutedEventArgs e)
+        private void LoginView_Click(object sender, RoutedEventArgs e)
         {
             registerGrid.Visibility = Visibility.Collapsed;
             loginGrid.Visibility = Visibility.Visible;
@@ -112,7 +111,7 @@ namespace FinalExamGursimranSinghMudhar
             firstname.Text = "";
             lastname.Text = "";
         }
-        private async void register_submit(object sender, RoutedEventArgs e)
+        private async void Register_submit(object sender, RoutedEventArgs e)
         {
             string fname = firstname.Text;
             string lname = lastname.Text;
@@ -148,7 +147,7 @@ namespace FinalExamGursimranSinghMudhar
                 {
                     MessageDialog dialog = new MessageDialog("You've been registered Succesfully! Login to continue.");
                     await dialog.ShowAsync();
-                    loginView_Click(sender, e);
+                    LoginView_Click(sender, e);
                 }
                 else
                 {
@@ -167,6 +166,21 @@ namespace FinalExamGursimranSinghMudhar
                 cmd.Dispose();
                 conn.Close();
             }
+        }
+        private void Hide_all()
+        {
+            login.Visibility = Visibility.Collapsed;
+            home.Visibility = Visibility.Collapsed;
+            about.Visibility = Visibility.Collapsed;
+            feedback.Visibility = Visibility.Collapsed;
+            checkout.Visibility = Visibility.Collapsed;
+        }
+
+        private void Nav_Click(object sender, RoutedEventArgs e)
+        {
+            Hide_all();
+            var page = (StackPanel)((Button)sender).Tag;
+            page.Visibility = Visibility.Visible;
         }
     }
 }

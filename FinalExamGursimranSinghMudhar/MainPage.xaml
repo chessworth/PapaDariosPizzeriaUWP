@@ -11,11 +11,47 @@
         <ImageBrush Stretch="None" ImageSource="Assets/bg.png"/>
     </Page.Background>
     <StackPanel x:Name="Pages">
-        <NavigationView x:Name="nav" PaneDisplayMode="Top" Height="100px" Margin="60,10,60,0" Visibility="Visible" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" Background="#F2F2F3" Foreground="#FC922C">
-
+        <NavigationView x:Name="nav" PaneDisplayMode="Top" Height="50" Margin="60,10,60,0" Visibility="Visible" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" Background="#F2F2F3" Foreground="#FC922C" IsPaneVisible="False">
+            <StackPanel Orientation="Horizontal" Height="40">
+                <!--Hacky solution because i used only one page-->
+                <Button Content="Home" Tag="{Binding ElementName=home}" Foreground="#FC922C" BorderBrush="#FC922C" MinWidth="100" Width="200" Height="60" Margin="10,5" Click="Nav_Click"></Button>
+                <Button Content="About" Tag="{Binding ElementName=about}" Foreground="#FC922C" BorderBrush="#FC922C" MinWidth="100" Width="200" Height="60" Margin="10,5 " Click="Nav_Click"></Button>
+                <Button Content="Checkout" Tag="{Binding ElementName=checkout}" Foreground="#FC922C" BorderBrush="#FC922C" MinWidth="100" Width="200" Height="60" Margin="10,5" Click="Nav_Click"></Button>
+                <Button Content="Feedback" Tag="{Binding ElementName=feedback}" Foreground="#FC922C" BorderBrush="#FC922C" MinWidth="100" Width="200" Height="60" Margin="10,5" Click="Nav_Click"></Button>
+                <Button Content="Login/Register" Tag="{Binding ElementName=login}" Foreground="#FC3B37" BorderBrush="#F2F2F3" MinWidth="100" Width="140" Height="32" Margin="120,5,10,5" Click="Nav_Click">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.ThemeDictionaries>
+                                <ResourceDictionary x:Key="Dark">
+                                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#F2F2F3"/>
+                                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FC3B37"/>
+                                </ResourceDictionary>
+                                <ResourceDictionary x:Key="Light">
+                                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#F2F2F3"/>
+                                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FC3B37"/>
+                                </ResourceDictionary>
+                            </ResourceDictionary.ThemeDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+            <NavigationView.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Dark">
+                            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#F2F2F3"/>
+                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FC922C"/>
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Light">
+                            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#F2F2F3"/>
+                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FC922C"/>
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
+            </NavigationView.Resources>
         </NavigationView>
-        <StackPanel x:Name="login" Orientation="Horizontal" Visibility="visible" Margin="0,110,0,0" >
-            <Grid Visibility="collapsed"
+        <StackPanel x:Name="login" Orientation="Horizontal" Visibility="collapsed" Margin="0,110,0,0" >
+            <Grid Visibility="Visible"
                 x:Name="loginGrid"
             Height="460"
                 Width="500"
@@ -26,11 +62,11 @@
                 <TextBox x:Name="username" Width="200" Height="30" VerticalAlignment="Top" Margin="100,100,0,0"></TextBox>
                 <TextBlock VerticalAlignment="Top" Margin="0,176,175,0" Text="Password:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
                 <PasswordBox x:Name="password" Width="200" Height="30" VerticalAlignment="Top" Margin="100,175,0,0"></PasswordBox>
-                <Button x:Name="loginBtn" Content="Login" VerticalAlignment="Top" Margin="0,275,0,0" HorizontalAlignment="Center" Click="login_submit" Width="200"></Button>
+                <Button x:Name="loginBtn" Content="Login" VerticalAlignment="Top" Margin="0,275,0,0" HorizontalAlignment="Center" Click="Login_submit" Width="200"></Button>
                 <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,325,0,0" Text="Don't Have an account yet?" Foreground="Black"></TextBlock>
-                <Button x:Name="registerView" Click="registerView_Click" Content="Register" VerticalAlignment="Top" Margin="0,365,0,0" HorizontalAlignment="Center" Width="200"></Button>
+                <Button x:Name="registerView" Click="RegisterView_Click" Content="Register" VerticalAlignment="Top" Margin="0,365,0,0" HorizontalAlignment="Center" Width="200"></Button>
             </Grid>
-            <Grid Visibility="Visible"
+            <Grid Visibility="collapsed"
                 x:Name="registerGrid"
             Height="460"
                 Width="500"
@@ -46,12 +82,33 @@
                 <PasswordBox x:Name="newpassword" Width="200" Height="30" VerticalAlignment="Top" Margin="100,150,0,0" PlaceholderText="******************"></PasswordBox>
                 <TextBlock VerticalAlignment="Top" Margin="0,201,200,0" Text="Confirm Password:" FontSize="16" Width="265" Height="30" Padding="5" Foreground="Black"></TextBlock>
                 <PasswordBox x:Name="newpasswordconfirm" Width="200" Height="30" VerticalAlignment="Top" Margin="100,200,0,0" PlaceholderText="******************"></PasswordBox>
-                <Button x:Name="registerbtn" Content="Register" VerticalAlignment="Top" Margin="0,275,0,0" HorizontalAlignment="Center" Click="register_submit" Width="200"></Button>
+                <Button x:Name="registerbtn" Content="Register" VerticalAlignment="Top" Margin="0,275,0,0" HorizontalAlignment="Center" Click="Register_submit" Width="200"></Button>
                 <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,325,0,0" Text="Already have an account?" Foreground="Black"></TextBlock>
-                <Button x:Name="loginview" Click="loginView_Click" Content="Login" VerticalAlignment="Top" Margin="0,365,0,0" HorizontalAlignment="Center" Width="200"></Button>
+                <Button x:Name="loginview" Click="LoginView_Click" Content="Login" VerticalAlignment="Top" Margin="0,365,0,0" HorizontalAlignment="Center" Width="200"></Button>
             </Grid>
         </StackPanel>
         <StackPanel x:Name="home" Visibility="Collapsed">
+            <Grid
+            Height="560"
+        Background="#88FFFFFF"
+        Margin="60, 0, 60, 50">
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="about" Visibility="Collapsed">
+            <Grid
+            Height="560"
+        Background="#88FFFFFF"
+        Margin="60, 0, 60, 50">
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="checkout" Visibility="Collapsed">
+            <Grid
+            Height="560"
+        Background="#88FFFFFF"
+        Margin="60, 0, 60, 50">
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="feedback" Visibility="Collapsed">
             <Grid
             Height="560"
         Background="#88FFFFFF"
