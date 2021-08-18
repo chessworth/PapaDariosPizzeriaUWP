@@ -16,6 +16,7 @@ using System.Data.SqlClient;
 using System.Data;
 using Windows.UI.Popups;
 using System.Text;
+using System.ComponentModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -24,18 +25,35 @@ namespace FinalExamGursimranSinghMudhar
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
         //set up connection string as property
         private static string connectionString = @"Server=DESKTOP-DAK1RS1;Database=final;User Id=Gursimran;Password=123456;";
         public string ConnectionString { get => connectionString; set =>connectionString = value; }
-        public bool LoggedIn { get; set; }
+        private bool loggedin;
+        public bool LoggedIn {
+            get 
+            {
+                return loggedin;
+            }
+            set 
+            {
+                this.loggedin = value;
+                NotifyPropertyChanged();
+            }
+        }
         public bool admin { get; set; }
         public User user { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public MainPage()
         {
             this.InitializeComponent();
+        }
+        //notify property change for binding
+        private void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         //methods for password decode/encode (Stack Overflow + .NET DOCS - System.Text)
         public static string Base64Encode(string plainText)
@@ -74,6 +92,8 @@ namespace FinalExamGursimranSinghMudhar
                     username.Text = "";
                     password.Password = "";
                     //TODO : Redirect to home
+                    Hide_all();
+                    home.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -180,6 +200,16 @@ namespace FinalExamGursimranSinghMudhar
             Hide_all();
             var page = (StackPanel)((Button)sender).Tag;
             page.Visibility = Visibility.Visible;
+        }
+        //return visibility set
+        private Visibility GetVisibility(bool visible)
+        {
+            return visible ? Visibility.Visible : Visibility.Collapsed;
+        }
+        private Visibility GetReverseVisibility(bool visible)
+        {
+
+            return !visible ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

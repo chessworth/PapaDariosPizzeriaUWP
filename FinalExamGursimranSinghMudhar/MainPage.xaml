@@ -11,24 +11,27 @@
         <ImageBrush Stretch="None" ImageSource="Assets/bg.png"/>
     </Page.Background>
     <StackPanel x:Name="Pages">
-        <NavigationView x:Name="nav" PaneDisplayMode="Top" Height="50" Margin="60,10,60,0" Visibility="Visible" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" Background="#F2F2F3" Foreground="#FC922C" IsPaneVisible="False">
-            <StackPanel Orientation="Horizontal" Height="40">
+        <NavigationView x:Name="nav" PaneDisplayMode="Top" Height="50" Margin="60,10,60,0" Visibility="Visible" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" Background="#222" Foreground="#FC922C" IsPaneVisible="False" >
+            <StackPanel Orientation="Horizontal" Height="50" Padding="0,5" BorderBrush="#FC922C"  BorderThickness="0,0,0,3">
                 <!--Hacky solution because i used only one page-->
-                <Button Content="Home" Tag="{Binding ElementName=home}" Foreground="#FC922C" BorderBrush="#FC922C" BorderThickness="2 0 0 0" MinWidth="100" Width="200" Height="60" Margin="10,5,0,5" Click="Nav_Click"></Button>
-                <Button Content="About" Tag="{Binding ElementName=about}" Foreground="#FC922C" BorderBrush="#FC922C" BorderThickness="2 0 0 0" MinWidth="100" Width="200" Height="60" Margin="0,5 " Click="Nav_Click"></Button>
-                <Button Content="Checkout" Tag="{Binding ElementName=checkout}" Foreground="#FC922C" BorderBrush="#FC922C" BorderThickness="2 0 0 0" MinWidth="100" Width="200" Height="60" Margin="0,5" Click="Nav_Click"></Button>
-                <Button Content="Feedback" Tag="{Binding ElementName=feedback}" Foreground="#FC922C" BorderBrush="#FC922C" BorderThickness="2 0" MinWidth="100" Width="200" Height="60" Margin="0,5" Click="Nav_Click"></Button>
-                <Button Content="Login/Register" Tag="{Binding ElementName=login}" Foreground="#FC3B37" BorderThickness="0" MinWidth="100" Width="140" Height="32" Margin="200,5,10,5" Click="Nav_Click">
+                <Button Content="Home" Tag="{Binding ElementName=home}" Foreground="#FC922C" BorderBrush="#FC922C" Background="#262626" BorderThickness="2 0 0 0" Width="200" Height="60" Margin="10,5,0,5" Click="Nav_Click"></Button>
+                <Button Content="About" Tag="{Binding ElementName=about}" Foreground="#FC922C" BorderBrush="#FC922C" Background="#262626" BorderThickness="2 0 0 0" Width="200" Height="60" Margin="0,5 " Click="Nav_Click"></Button>
+                <Button Content="Checkout" Tag="{Binding ElementName=checkout}" Foreground="#FC922C" BorderBrush="#FC922C" Background="#262626" BorderThickness="2 0 0 0"  Width="200" Height="60" Margin="0,5" Click="Nav_Click"></Button>
+                <Button Content="Feedback" Tag="{Binding ElementName=feedback}" Visibility="{x:Bind GetVisibility(LoggedIn), Mode=OneWay}" Foreground="#FC922C" BorderBrush="#FC922C" Background="#262626" BorderThickness="2 0" Width="200" Height="60" Margin="0,5" Click="Nav_Click"></Button>
+                <Grid Width="200" 
+                      Visibility="Collapsed" >
+                    <!-- Visibility="{x:Bind GetReverseVisibility(LoggedIn), Mode=OneWay}" --></Grid>
+                <Button Content="Login/Register" Tag="{Binding ElementName=login}" Foreground="#FC3B37"  BorderBrush="#aabbbbbb" Background="#222"  BorderThickness="1 0 0 0" MinWidth="100" Width="140" Height="32" Margin="200,5,10,5" Click="Nav_Click" HorizontalAlignment="Right">
                     <Button.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.ThemeDictionaries>
                                 <ResourceDictionary x:Key="Dark">
-                                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#F2F2F3"/>
-                                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FC3B37"/>
+                                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FC3B37"/>
+                                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333"/>
                                 </ResourceDictionary>
                                 <ResourceDictionary x:Key="Light">
-                                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#F2F2F3"/>
-                                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FC3B37"/>
+                                    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FC3B37"/>
+                                    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#333"/>
                                 </ResourceDictionary>
                             </ResourceDictionary.ThemeDictionaries>
                         </ResourceDictionary>
@@ -89,31 +92,35 @@
         </StackPanel>
         <StackPanel x:Name="home" Visibility="Collapsed">
             <Grid
-            Height="560"
-        Background="#88FFFFFF"
-        Margin="60, 0, 60, 50">
+            Height="550"
+        Background="#eeEDEDED"
+        Margin="60, 10, 60, 50">
+                <TextBlock Text="We Want Your Input!" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
             </Grid>
         </StackPanel>
         <StackPanel x:Name="about" Visibility="Collapsed">
             <Grid
-            Height="560"
-        Background="#88FFFFFF"
-        Margin="60, 0, 60, 50">
+            Height="550"
+        Background="#eeEDEDED"
+        Margin="60, 10, 60, 50">
+                <TextBlock Text="We Want Your Input!" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
             </Grid>
         </StackPanel>
         <StackPanel x:Name="checkout" Visibility="Collapsed">
             <Grid
-            Height="560"
-        Background="#88FFFFFF"
-        Margin="60, 0, 60, 50">
+            Height="550"
+        Background="#eeEDEDED"
+        Margin="60, 10, 60, 50">
+                <TextBlock Text="We Want Your Input!" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
             </Grid>
         </StackPanel>
         <StackPanel x:Name="feedback" Visibility="Visible">
             <Grid
-            Height="560"
-        Background="#bbFFFFFF"
-        Margin="60, 0, 60, 50" BorderBrush="#FC922C" BorderThickness="0,2,0,0">
-                
+            Height="550"
+        Background="#eeEDEDED"
+        Margin="60, 10, 60, 50">
+                <TextBlock Text="We Want Your Input!" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                <TextBlock Text="Give us your feedback for a chance to win free pizza!" FontSize="18" FontWeight="Medium" Foreground="#111" Margin="0,80" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
             </Grid>
         </StackPanel>
         <StackPanel x:Name="footer" Height="40" Margin="60,0" Background="#eeBC2B05">
