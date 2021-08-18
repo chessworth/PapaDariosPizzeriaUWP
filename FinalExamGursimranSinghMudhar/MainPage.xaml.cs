@@ -93,7 +93,6 @@ namespace FinalExamGursimranSinghMudhar
                 conn.Close();
             }
         }
-
         private void RegisterView_Click(object sender, RoutedEventArgs e)
         {
             loginGrid.Visibility = Visibility.Collapsed;
@@ -167,6 +166,7 @@ namespace FinalExamGursimranSinghMudhar
                 conn.Close();
             }
         }
+        //hide all pages
         private void Hide_all()
         {
             login.Visibility = Visibility.Collapsed;
@@ -175,7 +175,6 @@ namespace FinalExamGursimranSinghMudhar
             feedback.Visibility = Visibility.Collapsed;
             checkout.Visibility = Visibility.Collapsed;
         }
-
         private void Nav_Click(object sender, RoutedEventArgs e)
         {
             Hide_all();

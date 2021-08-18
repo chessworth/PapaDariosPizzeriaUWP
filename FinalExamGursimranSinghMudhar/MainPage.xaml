@@ -14,11 +14,11 @@
         <NavigationView x:Name="nav" PaneDisplayMode="Top" Height="50" Margin="60,10,60,0" Visibility="Visible" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" Background="#F2F2F3" Foreground="#FC922C" IsPaneVisible="False">
             <StackPanel Orientation="Horizontal" Height="40">
                 <!--Hacky solution because i used only one page-->
-                <Button Content="Home" Tag="{Binding ElementName=home}" Foreground="#FC922C" BorderBrush="#FC922C" MinWidth="100" Width="200" Height="60" Margin="10,5" Click="Nav_Click"></Button>
-                <Button Content="About" Tag="{Binding ElementName=about}" Foreground="#FC922C" BorderBrush="#FC922C" MinWidth="100" Width="200" Height="60" Margin="10,5 " Click="Nav_Click"></Button>
-                <Button Content="Checkout" Tag="{Binding ElementName=checkout}" Foreground="#FC922C" BorderBrush="#FC922C" MinWidth="100" Width="200" Height="60" Margin="10,5" Click="Nav_Click"></Button>
-                <Button Content="Feedback" Tag="{Binding ElementName=feedback}" Foreground="#FC922C" BorderBrush="#FC922C" MinWidth="100" Width="200" Height="60" Margin="10,5" Click="Nav_Click"></Button>
-                <Button Content="Login/Register" Tag="{Binding ElementName=login}" Foreground="#FC3B37" BorderBrush="#F2F2F3" MinWidth="100" Width="140" Height="32" Margin="120,5,10,5" Click="Nav_Click">
+                <Button Content="Home" Tag="{Binding ElementName=home}" Foreground="#FC922C" BorderBrush="#FC922C" BorderThickness="2 0 0 0" MinWidth="100" Width="200" Height="60" Margin="10,5,0,5" Click="Nav_Click"></Button>
+                <Button Content="About" Tag="{Binding ElementName=about}" Foreground="#FC922C" BorderBrush="#FC922C" BorderThickness="2 0 0 0" MinWidth="100" Width="200" Height="60" Margin="0,5 " Click="Nav_Click"></Button>
+                <Button Content="Checkout" Tag="{Binding ElementName=checkout}" Foreground="#FC922C" BorderBrush="#FC922C" BorderThickness="2 0 0 0" MinWidth="100" Width="200" Height="60" Margin="0,5" Click="Nav_Click"></Button>
+                <Button Content="Feedback" Tag="{Binding ElementName=feedback}" Foreground="#FC922C" BorderBrush="#FC922C" BorderThickness="2 0" MinWidth="100" Width="200" Height="60" Margin="0,5" Click="Nav_Click"></Button>
+                <Button Content="Login/Register" Tag="{Binding ElementName=login}" Foreground="#FC3B37" BorderThickness="0" MinWidth="100" Width="140" Height="32" Margin="200,5,10,5" Click="Nav_Click">
                     <Button.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.ThemeDictionaries>
@@ -50,7 +50,7 @@
                 </ResourceDictionary>
             </NavigationView.Resources>
         </NavigationView>
-        <StackPanel x:Name="login" Orientation="Horizontal" Visibility="collapsed" Margin="0,110,0,0" >
+        <StackPanel x:Name="login" Orientation="Horizontal" Visibility="Collapsed" Margin="0,110,00,40" >
             <Grid Visibility="Visible"
                 x:Name="loginGrid"
             Height="460"
@@ -108,12 +108,16 @@
         Margin="60, 0, 60, 50">
             </Grid>
         </StackPanel>
-        <StackPanel x:Name="feedback" Visibility="Collapsed">
+        <StackPanel x:Name="feedback" Visibility="Visible">
             <Grid
             Height="560"
-        Background="#88FFFFFF"
-        Margin="60, 0, 60, 50">
+        Background="#bbFFFFFF"
+        Margin="60, 0, 60, 50" BorderBrush="#FC922C" BorderThickness="0,2,0,0">
+                
             </Grid>
+        </StackPanel>
+        <StackPanel x:Name="footer" Height="40" Margin="60,0" Background="#eeBC2B05">
+            <TextBlock Text="Copyright 2021-2022 &#169;. Made with love by Gursimran for Papa Dario's" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12.5" Opacity="0.9"></TextBlock>
         </StackPanel>
     </StackPanel>
     <Page.Resources>
