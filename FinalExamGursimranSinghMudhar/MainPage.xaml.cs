@@ -18,14 +18,15 @@ namespace FinalExamGursimranSinghMudhar
     {
         //set up connection string as property
         private static string connectionString = @"Server=DESKTOP-DAK1RS1;Database=final;User Id=Gursimran;Password=123456;";
-        public string ConnectionString { get => connectionString; set =>connectionString = value; }
+        public string ConnectionString { get => connectionString; set => connectionString = value; }
         private bool loggedin;
-        public bool LoggedIn {
-            get 
+        public bool LoggedIn
+        {
+            get
             {
                 return loggedin;
             }
-            set 
+            set
             {
                 this.loggedin = value;
                 NotifyPropertyChanged();
@@ -83,6 +84,7 @@ namespace FinalExamGursimranSinghMudhar
                     //TODO : Redirect to home
                     Hide_all();
                     home.Visibility = Visibility.Visible;
+                    loginNav.Content = "Log Out";
                 }
                 else
                 {
@@ -124,7 +126,7 @@ namespace FinalExamGursimranSinghMudhar
             string login = newusername.Text;
             string pw = Base64Encode(newpassword.Password);
             string confirmpw = Base64Encode(newpasswordconfirm.Password);
-            if(fname == "" || lname == "" || login == "" || pw == "" || confirmpw == "")
+            if (fname == "" || lname == "" || login == "" || pw == "" || confirmpw == "")
             {
                 //TODO add red border to empty inputs
                 _ = await Alert("Invalid Input", "Please enter all values");
@@ -147,7 +149,7 @@ namespace FinalExamGursimranSinghMudhar
                 _ = cmd.Parameters.AddWithValue("@2", login);
                 _ = cmd.Parameters.AddWithValue("@3", pw);
                 conn.Open();
-                if(cmd.ExecuteNonQuery() > 0)
+                if (cmd.ExecuteNonQuery() > 0)
                 {
                     _ = await Alert("Succes", "You've been registered Succesfully! Login to continue.");
                     LoginView_Click(sender, e);
@@ -180,8 +182,15 @@ namespace FinalExamGursimranSinghMudhar
         private void Nav_Click(object sender, RoutedEventArgs e)
         {
             Hide_all();
-            var page = (StackPanel)((Button)sender).Tag;
+            StackPanel page = (StackPanel)((Button)sender).Tag;
             page.Visibility = Visibility.Visible;
+            if ((Button)sender == loginNav && loginNav.Content.ToString().Equals("Log Out", StringComparison.OrdinalIgnoreCase))
+            {
+                user = null;
+                LoggedIn = false;
+                admin = false;
+                loginNav.Content = "Login/Register";
+            }
         }
         private async void Feedback_submit(object sender, RoutedEventArgs e)
         {
@@ -222,6 +231,7 @@ namespace FinalExamGursimranSinghMudhar
                         if (orderNum.Text == "")
                         {
                             feedbackAnyway = 1;
+                            conn.Open();
                         }
                         //check if order number exists in database
                         else
@@ -256,7 +266,7 @@ namespace FinalExamGursimranSinghMudhar
                             if (cmd.ExecuteNonQuery() > 0)
                             {
                                 _ = await Alert("Succes", "Review Added Successfully!");
-                                pizzaLottery();
+                                PizzaLottery();
                                 orderNum.Text = "";
                                 orderRating.Text = "";
                                 review.Text = "";
@@ -279,9 +289,13 @@ namespace FinalExamGursimranSinghMudhar
                 }
             }
         }
-        private void pizzaLottery()
+        private async void PizzaLottery()
         {
-
+            Random rand = new Random();
+            int roll = rand.Next(20);
+            _ = roll == 20
+               ? await Alert("Lottery Result!", "You've won a free pizza! We don't know how to deliver it yet.")
+               : await Alert("Lottery Result!", $"Sorry! You didn't win anything. You rolled a {roll} on a 20-sided dice");
         }
         //return visibility set
         private Visibility GetVisibility(bool visible)

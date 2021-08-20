@@ -24,7 +24,7 @@
                       Visibility="Collapsed" >
                         <!-- Visibility="{x:Bind GetReverseVisibility(LoggedIn), Mode=OneWay}" -->
                     </Grid>
-                    <Button Content="Login/Register" Tag="{Binding ElementName=login}" Foreground="#FC3B37"  BorderBrush="#aabbbbbb" Background="#222"  BorderThickness="1 0 0 0" MinWidth="100" Width="140" Height="32" Margin="200,5,10,5" Click="Nav_Click" HorizontalAlignment="Right">
+                    <Button x:Name="loginNav" Content="Login/Register" Tag="{Binding ElementName=login}" Foreground="#FC3B37"  BorderBrush="#aabbbbbb" Background="#222"  BorderThickness="1 0 0 0" MinWidth="100" Width="140" Height="32" Margin="200,5,10,5" Click="Nav_Click" HorizontalAlignment="Right">
                         <Button.Resources>
                             <ResourceDictionary>
                                 <ResourceDictionary.ThemeDictionaries>
