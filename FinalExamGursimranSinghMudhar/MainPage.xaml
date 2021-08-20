@@ -98,7 +98,7 @@
             Height="550"
         Background="#eeEDEDED"
         Margin="60, 10, 60, 50">
-                    <TextBlock Text="We Want Your Input!" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock Text="Home" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
                 </Grid>
             </StackPanel>
             <StackPanel x:Name="about" Visibility="Collapsed">
@@ -106,7 +106,7 @@
             Height="550"
         Background="#eeEDEDED"
         Margin="60, 10, 60, 50">
-                    <TextBlock Text="We Want Your Input!" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock Text="Papa Dario's Story" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
                 </Grid>
             </StackPanel>
             <StackPanel x:Name="checkout" Visibility="Collapsed">
@@ -114,7 +114,7 @@
             Height="550"
         Background="#eeEDEDED"
         Margin="60, 10, 60, 50">
-                    <TextBlock Text="We Want Your Input!" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock Text="Checkout" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
                 </Grid>
             </StackPanel>
             <StackPanel x:Name="feedback" Visibility="Visible">
@@ -129,7 +129,7 @@
                     <TextBlock Text="Overall Rating (1-5): " FontSize="16"  Foreground="#111" Margin="0,225, 450, 0" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
                     <TextBox x:Name="orderRating" FontSize="16" Foreground="#111" Margin="100,220, 0, 0"  VerticalAlignment="Top" HorizontalAlignment="Center" Height="35" Width="300"></TextBox>
                     <TextBlock Text="Your Review: " FontSize="16"  Foreground="#111" Margin="0,275, 400, 0" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
-                    <TextBox x:Name="review" FontSize="16" Foreground="#111" Margin="200,270, 0, 0"  VerticalAlignment="Top" HorizontalAlignment="Center" Height="150" Width="400"></TextBox>
+                    <TextBox x:Name="review" FontSize="16" Foreground="#111" Margin="200,270, 0, 0"  VerticalAlignment="Top" HorizontalAlignment="Center" Height="150" Width="400" TextWrapping="Wrap"></TextBox>
                     <Button x:Name="submitReviw" Click="Feedback_submit" Content="Submit Feedback" FontSize="16" Margin="0,470,0,0"  VerticalAlignment="Top" HorizontalAlignment="Center" Height="40" Width="400" ></Button>
                 </Grid>
             </StackPanel>

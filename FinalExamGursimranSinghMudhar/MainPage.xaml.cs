@@ -63,8 +63,8 @@ namespace FinalExamGursimranSinghMudhar
             {
                 string query = "select * from users where username = @0 and password = @1;";
                 cmd.CommandText = query;
-                cmd.Parameters.AddWithValue("@0", login);
-                cmd.Parameters.AddWithValue("@1", pw);
+                _ = cmd.Parameters.AddWithValue("@0", login);
+                _ = cmd.Parameters.AddWithValue("@1", pw);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
@@ -86,15 +86,13 @@ namespace FinalExamGursimranSinghMudhar
                 }
                 else
                 {
-                    MessageDialog dialog = new MessageDialog("Invalid Username or Password");
-                    await dialog.ShowAsync();
+                    _ = await Alert("Invalid Input", "Invalid Username or Password");
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageDialog dialog = new MessageDialog(ex.Message.ToString());
-                await dialog.ShowAsync();
+                _ = await Alert("Error!", ex.Message.ToString());
             }
             finally
             {
@@ -129,15 +127,13 @@ namespace FinalExamGursimranSinghMudhar
             if(fname == "" || lname == "" || login == "" || pw == "" || confirmpw == "")
             {
                 //TODO add red border to empty inputs
-                MessageDialog dialog = new MessageDialog("Please enter all values");
-                await dialog.ShowAsync();
+                _ = await Alert("Invalid Input", "Please enter all values");
                 return;
             }
             if (!pw.Equals(confirmpw))
             {
                 //TODO add red border to empty inputs
-                MessageDialog dialog = new MessageDialog("Passwords don't match!");
-                await dialog.ShowAsync();
+                _ = await Alert("Invalid Input", "Passwords don't match!");
                 return;
             }
             SqlConnection conn = new SqlConnection(ConnectionString);
@@ -146,28 +142,25 @@ namespace FinalExamGursimranSinghMudhar
             {
                 string query = "INSERT INTO USERS(FNAME,LNAME,USERNAME,PASSWORD) VALUES(@0, @1, @2, @3); ";
                 cmd.CommandText = query;
-                cmd.Parameters.AddWithValue("@0", fname);
-                cmd.Parameters.AddWithValue("@1", lname);
-                cmd.Parameters.AddWithValue("@2", login);
-                cmd.Parameters.AddWithValue("@3", pw);
+                _ = cmd.Parameters.AddWithValue("@0", fname);
+                _ = cmd.Parameters.AddWithValue("@1", lname);
+                _ = cmd.Parameters.AddWithValue("@2", login);
+                _ = cmd.Parameters.AddWithValue("@3", pw);
                 conn.Open();
                 if(cmd.ExecuteNonQuery() > 0)
                 {
-                    MessageDialog dialog = new MessageDialog("You've been registered Succesfully! Login to continue.");
-                    await dialog.ShowAsync();
+                    _ = await Alert("Succes", "You've been registered Succesfully! Login to continue.");
                     LoginView_Click(sender, e);
                 }
                 else
                 {
-                    MessageDialog dialog = new MessageDialog("Registration error. Try again or contact an admin.");
-                    await dialog.ShowAsync();
+                    _ = await Alert("Error!", "Registration error. Try again or contact an admin.");
                 }
 
             }
             catch (Exception ex)
             {
-                MessageDialog dialog = new MessageDialog(ex.Message.ToString());
-                await dialog.ShowAsync();
+                _ = await Alert("Error!", ex.Message.ToString());
             }
             finally
             {
@@ -192,12 +185,103 @@ namespace FinalExamGursimranSinghMudhar
         }
         private async void Feedback_submit(object sender, RoutedEventArgs e)
         {
+            int parsedOrderID = 0, parsedRating = 0;
+            //must be a member to give feedback
             if (!loggedin)
             {
-                MessageDialog dialog = new MessageDialog("You must be logged in to sumit feedback");
-                await dialog.ShowAsync();
+                _ = await Alert("Error!", "You must be logged in to sumit feedback");
                 return;
             }
+            //check validity of values
+            if (orderRating == null || !int.TryParse(orderRating.Text, out parsedRating) || parsedRating < 1 || parsedRating > 5)
+            {
+                _ = await Alert("Invalid Input", "Rating Value must be an integer between 1 and 5!");
+                return;
+            }
+            else if (review.Text == "")
+            {
+                _ = await Alert("Invalid Input", "Please enter some feedback!");
+                return;
+            }
+            else
+            {
+                //check validity of order input
+                if (orderNum.Text != "" && !int.TryParse(orderNum.Text, out parsedOrderID))
+                {
+
+                    _ = await Alert("Invalid Input", "Please enter valid Order Number");
+                }
+                else
+                {
+                    int feedbackAnyway = -1;
+
+                    SqlConnection conn = new SqlConnection(ConnectionString);
+                    SqlCommand cmd = conn.CreateCommand();
+                    try
+                    {
+                        if (orderNum.Text == "")
+                        {
+                            feedbackAnyway = 1;
+                        }
+                        //check if order number exists in database
+                        else
+                        {
+                            string query = "select * from orders where order_id = @0;";
+                            cmd.CommandText = query;
+                            _ = cmd.Parameters.AddWithValue("@0", parsedOrderID);
+                            conn.Open();
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            if (!reader.HasRows)
+                            {
+                                feedbackAnyway = (int)await Alert("Invalid Input!", "The order number was not found! Send Feedback anyway?", true);
+                            }
+                            reader.Close();
+                        }
+                        //1 means yes was selected
+                        if (feedbackAnyway == 1 || feedbackAnyway == -1)
+                        {
+                            string query;
+                            if (feedbackAnyway == -1)
+                            {
+                                query = "insert into reviews(user_id, order_id, rating, review) values(@1, @0, @2, @3)";
+                            }
+                            else
+                            {
+                                query = "insert into reviews(user_id, rating, review) values(@1, @2, @3)";
+                            }
+                            cmd.CommandText = query;
+                            _ = cmd.Parameters.AddWithValue("@1", user.UserID);
+                            _ = cmd.Parameters.AddWithValue("@2", parsedRating);
+                            _ = cmd.Parameters.AddWithValue("@3", review.Text);
+                            if (cmd.ExecuteNonQuery() > 0)
+                            {
+                                _ = await Alert("Succes", "Review Added Successfully!");
+                                pizzaLottery();
+                                orderNum.Text = "";
+                                orderRating.Text = "";
+                                review.Text = "";
+                            }
+                            else
+                            {
+                                _ = await Alert("Error!", "Error submitting review. Try again or contact an admin.");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _ = await Alert("Error!", ex.Message.ToString());
+                    }
+                    finally
+                    {
+                        cmd.Dispose();
+                        conn.Close();
+                    }
+                }
+            }
+        }
+        private void pizzaLottery()
+        {
+
         }
         //return visibility set
         private Visibility GetVisibility(bool visible)
@@ -208,6 +292,19 @@ namespace FinalExamGursimranSinghMudhar
         {
 
             return !visible ? Visibility.Visible : Visibility.Collapsed;
+        }
+        //utility error function
+        private async System.Threading.Tasks.Task<ContentDialogResult> Alert(string title, string message, bool isYEsNo = false)
+        {
+            ContentDialog dialog = new ContentDialog()
+            {
+                Title = title,
+                Content = message,
+                SecondaryButtonText = isYEsNo ? "No" : "Ok",
+                IsPrimaryButtonEnabled = isYEsNo,
+                PrimaryButtonText = isYEsNo ? "Yes" : ""
+            };
+            return await dialog.ShowAsync();
         }
     }
 }
