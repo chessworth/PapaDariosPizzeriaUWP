@@ -7,6 +7,9 @@ using Windows.UI.Popups;
 using System.Text;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.IO;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -32,8 +35,11 @@ namespace FinalExamGursimranSinghMudhar
         }
         public bool admin { get; set; }
         public User user { get; set; }
-        public List<IFoodItem> Cart { get; set; } = new List<IFoodItem>();
+        public ObservableCollection<IFoodItem> Cart { get; set; } = new ObservableCollection<IFoodItem>();
         public List<IFoodItem> Menu { get; set; } = new List<IFoodItem>();
+        public List<IFoodItem> PizzaMenu { get; set; } = new List<IFoodItem>();
+        public List<IFoodItem> SideMenu { get; set; } = new List<IFoodItem>();
+        public List<(string, string)> Selections { get; set; } = new List<(string, string)>(); 
 
         public event PropertyChangedEventHandler PropertyChanged;
         public MainPage()
@@ -41,6 +47,7 @@ namespace FinalExamGursimranSinghMudhar
             this.InitializeComponent();
             LoadMenu();
             PopulateMenu();
+            PopulateCheckout();
         }
         //notify property change for binding
         private void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] String propertyName = "")
@@ -327,7 +334,7 @@ namespace FinalExamGursimranSinghMudhar
             SqlCommand cmd = conn.CreateCommand();
             try
             {
-                string query = "select i.food_id, c.CATEGORY_NAME, i.name, i.price, i.description, i.image from food_item i inner join food_category c on i.CATEGORY_ID = c.CATEGORY_ID;";
+                string query = "select i.food_id, i.name, c.CATEGORY_NAME, i.price, i.description, i.image from food_item i inner join food_category c on i.CATEGORY_ID = c.CATEGORY_ID;";
                 cmd.CommandText = query;
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -335,7 +342,7 @@ namespace FinalExamGursimranSinghMudhar
                 {
                     IFoodItem food;
                     IDataReader data = (IDataReader)reader;
-                    if(data[1].ToString().Equals("Pizza", StringComparison.OrdinalIgnoreCase))
+                    if(data[2].ToString().Equals("Pizza", StringComparison.OrdinalIgnoreCase))
                     {
                         food = new Pizza((int)data[0], data[1].ToString(), data[2].ToString(), (double) data[3], data[4].ToString(), data[5].ToString());
                     }
@@ -362,13 +369,106 @@ namespace FinalExamGursimranSinghMudhar
             {
                 if(foodItem is Pizza)
                 {
-
+                    PizzaMenu.Add(foodItem);
                 }
                 else
                 {
-
+                    SideMenu.Add(foodItem);
                 }
             }
+        }
+
+        private void showPizza_Click(object sender, RoutedEventArgs e)
+        {
+            Pizzas.Visibility = Visibility.Visible;
+            PizzasScroll.Visibility = Visibility.Visible;
+            SidesDesserts.Visibility = Visibility.Collapsed;
+            SidesScroll.Visibility = Visibility.Collapsed;
+        }
+
+        private void showSide_Click(object sender, RoutedEventArgs e)
+        {
+            SidesDesserts.Visibility = Visibility.Visible;
+            SidesScroll.Visibility = Visibility.Visible;
+            Pizzas.Visibility = Visibility.Collapsed;
+            PizzasScroll.Visibility = Visibility.Collapsed;
+        }
+        private async void AddToCart(object sender, RoutedEventArgs e)
+        {
+            IFoodItem item = Menu.Find(i => i.FoodID == (int)((Button)sender).Tag);
+            string size;
+            if (Selections.Exists(i => i.Item1.Equals(item.FoodID.ToString())))
+            {
+                size = Selections.Find(i => i.Item1.Equals(item.FoodID.ToString())).Item2;
+            }
+            else
+            {
+                _ = item is Pizza ? size = "medium" : size = "16pcs.";
+            }
+            if(item is Pizza)
+            {
+                item = new Pizza(item.FoodID, item.Name, item.CategoryName, item.BasePrice, item.Description, item.Image.Substring(7), size.ToLower()[0]);
+            }
+            else
+            {
+
+                item = new Sides(item.FoodID, item.Name, item.CategoryName, item.BasePrice, item.Description, item.Image.Substring(7), int.Parse(size.TrimEnd(new char[] { 'p', 'c', 's', '.' })));
+            }
+            Cart.Insert(0,item);
+            IFoodItem total = Cart[Cart.Count - 1];
+            Cart.RemoveAt(Cart.Count - 1);
+            total.BasePrice += item.BasePrice;
+            total.FinalPrice += LoggedIn ? item.FinalPrice * 0.9 : item.FinalPrice;
+            Cart.Add(total);
+            if((int)await Alert("Success","Added to Cart! Proceed to Checkout?", true) == 1)
+            {
+                Hide_all();
+                checkout.Visibility = Visibility.Visible;
+            }
+        }
+        private void PopulateCheckout()
+        {
+            IFoodItem total = new Pizza(9999,"Total Price", "", 0, "","");
+            total.FinalPrice = 0;
+            Cart.Add(total);
+        }
+        private void RadioButton_Click(object sender, RoutedEventArgs e)
+        {
+            RadioButton rsender = (RadioButton)sender;
+            if(rsender.IsChecked == true)
+            {
+
+                if(Selections.Exists(i => i.Item1.Equals(rsender.GroupName)))
+                {
+                    Selections.Remove((rsender.GroupName, Selections.Find(i => i.Item1.Equals(rsender.GroupName)).Item2));
+                }
+                Selections.Add((rsender.GroupName, rsender.Content.ToString()));
+            }
+        }
+
+        private void RemoveFromCart(object sender, RoutedEventArgs e)
+        {
+            Cart.Remove(Cart.Single(i => i.FoodID == (int)((Button)sender).Tag));
+        }
+        private bool ShowDelete(object sender)
+        {
+            
+            return (int)((Button)sender).Tag != 9999;
+        }
+
+        private async void CheckoutBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string[] lines = new string[100];
+            Cart.Where(i => i.FoodID != 9999).ToList().ForEach(i =>
+             {
+                 lines.Append($"{i.Name} : {i.FinalPrice}$");
+             });
+            lines.Append($"Items bought: {Cart.Count}");
+            lines.Append($"Total Cost: {Cart.Sum(i=> i.FoodID==9999? 0: i.FinalPrice)}");
+            lines.Append($"Total DIscount: {(LoggedIn ? 10 : 0)}%");
+            lines.Append($"Final Amount: {Cart.Single(i => i.FoodID == 9999).FinalPrice}");
+
+            await File.WriteAllLinesAsync("WriteLines.txt", lines);
         }
     }
 }

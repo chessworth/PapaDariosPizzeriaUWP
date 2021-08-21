@@ -5,6 +5,7 @@
     xmlns:local="using:FinalExamGursimranSinghMudhar"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     FontFamily="Montserrat"
     x:Name="Root">
@@ -93,21 +94,63 @@
                     <Button x:Name="loginview" Click="LoginView_Click" Content="Login" VerticalAlignment="Top" Margin="0,400,0,0" HorizontalAlignment="Center" Width="200"></Button>
                 </Grid>
             </StackPanel>
-            <StackPanel x:Name="home" Visibility="Visible">
+            <StackPanel x:Name="home" Visibility="Collapsed">
                 <Grid
             Height="550"
         Background="#eeEDEDED"
         Margin="60, 10, 60, 50">
                     <TextBlock Text="Home" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
-                    <Button x:Name="showPizza" Content="Pizzas" Width="125" Height="50" VerticalAlignment="Top" Margin="27,100"></Button>
-                    <Button x:Name="showSide" Content="Sides n Desserts" Width="125" Height="50" VerticalAlignment="Top" Margin="27,148"></Button>
-                    <ScrollViewer Height="350" Margin="150, 100" HorizontalScrollMode="Enabled">
-                        <Grid x:Name="Pizzas" BorderBrush="#87A417" BorderThickness="2" >
-                            
-                        </Grid>
+                    <Button x:Name="showPizza" Click="showPizza_Click" Content="Pizzas" Width="125" Height="50" VerticalAlignment="Top" Margin="27,100"></Button>
+                    <Button x:Name="showSide" Click="showSide_Click"  Content="Sides n Desserts" Width="125" Height="50" VerticalAlignment="Top" Margin="27,148"></Button>
+                    <ScrollViewer x:Name="PizzasScroll" Height="350" Margin="150, 100" HorizontalScrollMode="Enabled">
+                        <GridView x:Name="Pizzas" ItemsSource="{x:Bind PizzaMenu}" BorderBrush="#87A417" BorderThickness="2"  SelectionMode ="None" IsItemClickEnabled = "False" >
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Width="280" Height="345" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="10">
+                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" Foreground="#111" ></TextBlock>
+                                        <Image Source="{Binding Image}" Stretch="Uniform" Width="250" MaxWidth="250" Height="150" MaxHeight="150" VerticalAlignment="Top"></Image>
+                                        <TextBlock Text="{Binding GetPrice}" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="5" Foreground="#111"></TextBlock>
+                                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                                            <RadioButton Click="RadioButton_Click" GroupName="{Binding FoodID}" Content="Small" Foreground="#111" FocusVisualPrimaryBrush="#111" MinWidth="50" Width="70"/>
+                                            <RadioButton Click="RadioButton_Click" GroupName="{Binding FoodID}" Content="Medium" IsChecked="True" Foreground="#111" FocusVisualPrimaryBrush="#111" MinWidth="50" Width="90"/>
+                                            <RadioButton Click="RadioButton_Click" GroupName="{Binding FoodID}" Content="Large" Foreground="#111" FocusVisualPrimaryBrush="#111" MinWidth="50" Width="80"/>
+                                        </StackPanel>
+                                        <Button Tag="{Binding FoodID}" Click="AddToCart" Content="Add To Cart" Width="225" HorizontalAlignment="Center"></Button>
+                                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="5" Foreground="#111"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsWrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+                        </GridView>
                     </ScrollViewer>
-                    <ScrollViewer Height="350" Margin="150, 100" HorizontalScrollMode="Enabled">
-                        <Grid x:Name="SidesDesserts" BorderBrush="#87A417" BorderThickness="2"  Visibility="Collapsed"></Grid>
+                    <ScrollViewer x:Name="SidesScroll" Height="350" Margin="150, 100" HorizontalScrollMode="Enabled" Visibility="Collapsed">
+                        <GridView x:Name="SidesDesserts" ItemsSource="{x:Bind SideMenu}" BorderBrush="#87A417" BorderThickness="2"  Visibility="Collapsed" SelectionMode="None" IsItemClickEnabled="False">
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Width="280" Height="345" VerticalAlignment="Top" HorizontalAlignment="Left" Padding="10">
+                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" Foreground="#111" ></TextBlock>
+                                        <Image Source="{Binding Image}" Stretch="Uniform" Width="250" MaxWidth="250" Height="150" MaxHeight="150" VerticalAlignment="Top"></Image>
+                                        <TextBlock Text="{Binding GetPrice}" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="5" Foreground="#111"></TextBlock>
+                                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                                            <RadioButton Click="RadioButton_Click" GroupName="{Binding FoodID}" Content="8pcs." Foreground="#111" FocusVisualPrimaryBrush="#111" MinWidth="50" Width="70"/>
+                                            <RadioButton Click="RadioButton_Click" GroupName="{Binding FoodID}" Content="16pcs." IsChecked="True" Foreground="#111" FocusVisualPrimaryBrush="#111" MinWidth="50" Width="90"/>
+                                            <RadioButton Click="RadioButton_Click" GroupName="{Binding FoodID}" Content="32pcs." Foreground="#111" FocusVisualPrimaryBrush="#111" MinWidth="50" Width="80"/>
+                                        </StackPanel>
+                                        <Button Tag="{Binding FoodID}" Click="AddToCart" Content="Add To Cart" Width="225" HorizontalAlignment="Center"></Button>
+                                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="5" Foreground="#111"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsWrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+                        </GridView>
                     </ScrollViewer>
                 </Grid>
             </StackPanel>
@@ -122,12 +165,33 @@
                     <TextBlock Text="Before Papa Dario was Papa Dario, he was just another teenage entity. This was before time existed. Eventually, he came into his own and became an unspeakable Great Old One, and half brother to Cthulu himself. He spent countless eons in the dark void of terrors, until he was named in a story in 1893 and incarnated as a human. Since then, he has been running a pizzeria, pretending to be his own descendant to avoid suspicion. But why a pizzeria, you might ask? Well, the short answer is that the goals of such an entity are beyond our understanding as mere mortals. It is best we not question him lest we might become figments of imagination, forgotten by all who knew us. Recently, he has learned of the existence of Gulab Jamuns and fallen in love with them. " LineHeight="25" TextAlignment="Justify" LineStackingStrategy="BlockLineHeight" Width="500" FontSize="18" VerticalAlignment="Top" Foreground="#111" HorizontalAlignment="Center" Margin="0, 100, 500, 0" TextWrapping="Wrap" Height="375"></TextBlock>
                 </Grid>
             </StackPanel>
-            <StackPanel x:Name="checkout" Visibility="Collapsed">
+            <StackPanel x:Name="checkout" Visibility="Visible">
                 <Grid
             Height="550"
         Background="#eeEDEDED"
         Margin="60, 10, 60, 50">
-                    <TextBlock Text="Checkout" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock Text="Checkout" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <ScrollViewer x:Name="CheckoutScroll" Height="350" Margin="100">
+                        <ListView x:Name="checkoutReview" ItemsSource="{x:Bind Cart}" Width="950" Height="350" SelectionMode ="None" IsItemClickEnabled = "False" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Width="950" Height="90" VerticalAlignment="Top" Orientation="Horizontal" BorderBrush="#bbb" BorderThickness="1" Padding="10">
+                                        <Button Width="50" Height="50" Content="&#10006;" Margin="0,0,25,0" Click="RemoveFromCart" Tag="{Binding FoodID}" Visibility="{Binding isRealEntry}"></Button>
+                                        <Image Source="{Binding Image}" Height="70" Width="100"></Image>
+                                        <StackPanel Width="350" Margin="90,0">
+                                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" Foreground="#111"></TextBlock>
+                                            <TextBlock Text="{Binding Description}" HorizontalAlignment="Center" Foreground="#111" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Width="200">
+                                            <TextBlock Text="{Binding ShowBasePrice}" HorizontalAlignment="Center" Margin="5" Foreground="#111"></TextBlock>
+                                            <TextBlock Text="{Binding ShowTotalPrice}" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" Foreground="#111"></TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollViewer>
+                    <Button x:Name="CheckoutBtn" Click="CheckoutBtn_Click" Content="Complete Order!" Width="200" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="50"></Button>
                 </Grid>
             </StackPanel>
             <StackPanel x:Name="feedback" Visibility="Collapsed">
@@ -157,10 +221,18 @@
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
                     <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#87A417"/>
+                    <SolidColorBrush x:Key="RadioButtonOuterEllipseStroke" Color="#BC2B05"/>
+                    <SolidColorBrush x:Key="RadioButtonOuterEllipseStrokePointerOver" Color="#EF1A00"/>
+                    <SolidColorBrush x:Key="RadioButtonForeground" Color="#333"/>
+                    <SolidColorBrush x:Key="RadioButtonForegroundPointerOver" Color="#000"/>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Light">
                     <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
                     <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#87A417"/>
+                    <SolidColorBrush x:Key="RadioButtonOuterEllipseStroke" Color="#BC2B05"/>
+                    <SolidColorBrush x:Key="RadioButtonOuterEllipseStrokePointerOver" Color="#EF1A00"/>
+                    <SolidColorBrush x:Key="RadioButtonForeground" Color="#333"/>
+                    <SolidColorBrush x:Key="RadioButtonForegroundPointerOver" Color="#000"/>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
             <ThemeShadow x:Key="ImageShadow"/>

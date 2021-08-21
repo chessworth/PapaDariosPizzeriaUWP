@@ -15,5 +15,21 @@ namespace FinalExamGursimranSinghMudhar
         public double FinalPrice { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
+        public string GetPrice { get; set; }
+        public string ShowBasePrice
+        {
+            get => "Base Price: " + BasePrice + "$";
+            set { }
+        }
+        public string ShowTotalPrice
+        {
+            get => "Total Price: " + FinalPrice + "$";
+            set { }
+        }
+        public Windows.UI.Xaml.Visibility isRealEntry
+        {
+            get => FoodID == 9999 ? Windows.UI.Xaml.Visibility.Collapsed : Windows.UI.Xaml.Visibility.Visible;
+            set { }
+        }
     }
 }

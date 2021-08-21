@@ -16,7 +16,7 @@ namespace FinalExamGursimranSinghMudhar
             CategoryName = category;
             BasePrice = baseprice;
             Description = description;
-            Image = img;
+            Image = "assets/" + img;
             Size = size;
             switch (size)
             {
@@ -34,5 +34,10 @@ namespace FinalExamGursimranSinghMudhar
             }
         }
         //TODO: function to change size
+        public new string GetPrice
+        {
+            get => BasePrice + "$ (Medium +3, Large +5)";
+            set { }
+        }
     }
 }
