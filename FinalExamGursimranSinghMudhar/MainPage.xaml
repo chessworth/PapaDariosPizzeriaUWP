@@ -102,7 +102,9 @@
                     <Button x:Name="showPizza" Content="Pizzas" Width="125" Height="50" VerticalAlignment="Top" Margin="27,100"></Button>
                     <Button x:Name="showSide" Content="Sides n Desserts" Width="125" Height="50" VerticalAlignment="Top" Margin="27,148"></Button>
                     <ScrollViewer Height="350" Margin="150, 100" HorizontalScrollMode="Enabled">
-                        <Grid x:Name="Pizzas" BorderBrush="#87A417" BorderThickness="2" ></Grid>
+                        <Grid x:Name="Pizzas" BorderBrush="#87A417" BorderThickness="2" >
+                            
+                        </Grid>
                     </ScrollViewer>
                     <ScrollViewer Height="350" Margin="150, 100" HorizontalScrollMode="Enabled">
                         <Grid x:Name="SidesDesserts" BorderBrush="#87A417" BorderThickness="2"  Visibility="Collapsed"></Grid>

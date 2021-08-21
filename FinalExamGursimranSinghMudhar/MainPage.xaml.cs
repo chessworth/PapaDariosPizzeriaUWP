@@ -6,6 +6,7 @@ using System.Data;
 using Windows.UI.Popups;
 using System.Text;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -31,11 +32,15 @@ namespace FinalExamGursimranSinghMudhar
         }
         public bool admin { get; set; }
         public User user { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
+        public List<IFoodItem> Cart { get; set; } = new List<IFoodItem>();
+        public List<IFoodItem> Menu { get; set; } = new List<IFoodItem>();
 
+        public event PropertyChangedEventHandler PropertyChanged;
         public MainPage()
         {
             this.InitializeComponent();
+            LoadMenu();
+            PopulateMenu();
         }
         //notify property change for binding
         private void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] String propertyName = "")
@@ -78,7 +83,6 @@ namespace FinalExamGursimranSinghMudhar
                     user = curLogged;
                     username.Text = "";
                     password.Password = "";
-                    //TODO : Redirect to home
                     Hide_all();
                     home.Visibility = Visibility.Visible;
                     loginNav.Content = "Log Out";
@@ -316,6 +320,55 @@ namespace FinalExamGursimranSinghMudhar
                 PrimaryButtonText = isYEsNo ? "Yes" : ""
             };
             return await dialog.ShowAsync();
+        }
+        private async void LoadMenu()
+        {
+            SqlConnection conn = new SqlConnection(ConnectionString);
+            SqlCommand cmd = conn.CreateCommand();
+            try
+            {
+                string query = "select i.food_id, c.CATEGORY_NAME, i.name, i.price, i.description, i.image from food_item i inner join food_category c on i.CATEGORY_ID = c.CATEGORY_ID;";
+                cmd.CommandText = query;
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    IFoodItem food;
+                    IDataReader data = (IDataReader)reader;
+                    if(data[1].ToString().Equals("Pizza", StringComparison.OrdinalIgnoreCase))
+                    {
+                        food = new Pizza((int)data[0], data[1].ToString(), data[2].ToString(), (double) data[3], data[4].ToString(), data[5].ToString());
+                    }
+                    else
+                    {
+                        food = new Sides((int)data[0], data[1].ToString(), data[2].ToString(), (double)data[3], data[4].ToString(), data[5].ToString());
+                    }
+                    Menu.Add(food);
+                }
+            }
+            catch (Exception ex)
+            {
+                _ = await Alert("Error!", ex.Message.ToString());
+            }
+            finally
+            {
+                cmd.Dispose();
+                conn.Close();
+            }
+        }
+        private void PopulateMenu()
+        {
+            foreach(IFoodItem foodItem in Menu)
+            {
+                if(foodItem is Pizza)
+                {
+
+                }
+                else
+                {
+
+                }
+            }
         }
     }
 }

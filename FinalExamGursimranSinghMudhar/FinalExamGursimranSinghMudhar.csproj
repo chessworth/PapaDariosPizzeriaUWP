@@ -119,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pizza.cs" />
+    <Compile Include="IFoodItem.cs" />
+    <Compile Include="Sides.cs" />
     <Compile Include="User.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -132,7 +135,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\bg.png" />
+    <Content Include="Assets\blt.jpg" />
+    <Content Include="Assets\cheeseburger.jpg" />
+    <Content Include="Assets\gulabjamun.jpg" />
+    <Content Include="Assets\honeywings.jpg" />
+    <Content Include="Assets\pepperoni.jpg" />
+    <Content Include="Assets\poutine.jpg" />
     <Content Include="Assets\teenDario.jpg" />
+    <Content Include="Assets\veggie.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
