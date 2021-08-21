@@ -20,9 +20,7 @@
                     <Button Content="About" Tag="{Binding ElementName=about}" Foreground="#FC922C" BorderBrush="#FC922C" Background="#262626" BorderThickness="2 0 0 0" Width="200" Height="60" Margin="0,5 " Click="Nav_Click"></Button>
                     <Button Content="Checkout" Tag="{Binding ElementName=checkout}" Foreground="#FC922C" BorderBrush="#FC922C" Background="#262626" BorderThickness="2 0 0 0"  Width="200" Height="60" Margin="0,5" Click="Nav_Click"></Button>
                     <Button Content="Feedback" Tag="{Binding ElementName=feedback}" Visibility="{x:Bind GetVisibility(LoggedIn), Mode=OneWay}" Foreground="#FC922C" BorderBrush="#FC922C" Background="#262626" BorderThickness="2 0" Width="200" Height="60" Margin="0,5" Click="Nav_Click"></Button>
-                    <Grid Width="200" 
-                      Visibility="Collapsed" >
-                        <!-- Visibility="{x:Bind GetReverseVisibility(LoggedIn), Mode=OneWay}" -->
+                    <Grid Width="200" Visibility="Collapsed"> <!--Visibility="{x:Bind GetReverseVisibility(LoggedIn), Mode=OneWay}">-->
                     </Grid>
                     <Button x:Name="loginNav" Content="Login/Register" Tag="{Binding ElementName=login}" Foreground="#FC3B37"  BorderBrush="#aabbbbbb" Background="#222"  BorderThickness="1 0 0 0" MinWidth="100" Width="140" Height="32" Margin="200,5,10,5" Click="Nav_Click" HorizontalAlignment="Right">
                         <Button.Resources>
@@ -64,41 +62,51 @@
                 HorizontalAlignment="Center"
                 Margin="390,0,390,0"
         Background="#eeEDEDED">
-                    <TextBlock VerticalAlignment="Top" Margin="0,101,175,0" Text="Username:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
-                    <TextBox x:Name="username" Width="200" Height="30" VerticalAlignment="Top" Margin="100,100,0,0"></TextBox>
-                    <TextBlock VerticalAlignment="Top" Margin="0,176,175,0" Text="Password:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
-                    <PasswordBox x:Name="password" Width="200" Height="30" VerticalAlignment="Top" Margin="100,175,0,0"></PasswordBox>
+                    <TextBlock Text="Login" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock VerticalAlignment="Top" Margin="0,126,175,0" Text="Username:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                    <TextBox x:Name="username" Width="200" Height="30" VerticalAlignment="Top" Margin="100,125,0,0"></TextBox>
+                    <TextBlock VerticalAlignment="Top" Margin="0,201,175,0" Text="Password:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                    <PasswordBox x:Name="password" Width="200" Height="30" VerticalAlignment="Top" Margin="100,200,0,0"></PasswordBox>
                     <Button x:Name="loginBtn" Content="Login" VerticalAlignment="Top" Margin="0,275,0,0" HorizontalAlignment="Center" Click="Login_submit" Width="200"></Button>
                     <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,325,0,0" Text="Don't Have an account yet?" Foreground="Black"></TextBlock>
                     <Button x:Name="registerView" Click="RegisterView_Click" Content="Register" VerticalAlignment="Top" Margin="0,365,0,0" HorizontalAlignment="Center" Width="200"></Button>
                 </Grid>
-                <Grid Visibility="collapsed"
+                <Grid Visibility="Collapsed"
                 x:Name="registerGrid"
             Height="460"
                 Width="500"
                 HorizontalAlignment="Center"
                 Margin="390,0,390,0"
         Background="#eeEDEDED">
-                    <TextBlock VerticalAlignment="Top" Margin="0,51,175,0" Text="Full Name::" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
-                    <TextBox x:Name="firstname" Width="100" Height="30" VerticalAlignment="Top" Margin="0,50,0,0" PlaceholderText="John"></TextBox>
-                    <TextBox x:Name="lastname" Width="100" Height="30" VerticalAlignment="Top" Margin="200,50,0,0" PlaceholderText="Smith"></TextBox>
-                    <TextBlock VerticalAlignment="Top" Margin="0,101,175,0" Text="Username:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
-                    <TextBox x:Name="newusername" Width="200" Height="30" VerticalAlignment="Top" Margin="100,100,0,0" PlaceholderText="JohnSmith225"></TextBox>
-                    <TextBlock VerticalAlignment="Top" Margin="0,151,175,0" Text="Password:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
-                    <PasswordBox x:Name="newpassword" Width="200" Height="30" VerticalAlignment="Top" Margin="100,150,0,0" PlaceholderText="******************"></PasswordBox>
-                    <TextBlock VerticalAlignment="Top" Margin="0,201,200,0" Text="Confirm Password:" FontSize="16" Width="265" Height="30" Padding="5" Foreground="Black"></TextBlock>
-                    <PasswordBox x:Name="newpasswordconfirm" Width="200" Height="30" VerticalAlignment="Top" Margin="100,200,0,0" PlaceholderText="******************"></PasswordBox>
-                    <Button x:Name="registerbtn" Content="Register" VerticalAlignment="Top" Margin="0,275,0,0" HorizontalAlignment="Center" Click="Register_submit" Width="200"></Button>
-                    <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,325,0,0" Text="Already have an account?" Foreground="Black"></TextBlock>
-                    <Button x:Name="loginview" Click="LoginView_Click" Content="Login" VerticalAlignment="Top" Margin="0,365,0,0" HorizontalAlignment="Center" Width="200"></Button>
+                    <TextBlock Text="Sign Up" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock VerticalAlignment="Top" Margin="0,101,175,0" Text="Full Name:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                    <TextBox x:Name="firstname" Width="100" Height="30" VerticalAlignment="Top" Margin="0,100,0,0" PlaceholderText="John"></TextBox>
+                    <TextBox x:Name="lastname" Width="100" Height="30" VerticalAlignment="Top" Margin="200,100,0,0" PlaceholderText="Smith"></TextBox>
+                    <TextBlock VerticalAlignment="Top" Margin="0,151,175,0" Text="Username:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                    <TextBox x:Name="newusername" Width="200" Height="30" VerticalAlignment="Top" Margin="100,150,0,0" PlaceholderText="JohnSmith225"></TextBox>
+                    <TextBlock VerticalAlignment="Top" Margin="0,201,175,0" Text="Password:" FontSize="16" Width="150" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                    <PasswordBox x:Name="newpassword" Width="200" Height="30" VerticalAlignment="Top" Margin="100,200,0,0" PlaceholderText="******************"></PasswordBox>
+                    <TextBlock VerticalAlignment="Top" Margin="0,251,200,0" Text="Confirm Password:" FontSize="16" Width="265" Height="30" Padding="5" Foreground="Black"></TextBlock>
+                    <PasswordBox x:Name="newpasswordconfirm" Width="200" Height="30" VerticalAlignment="Top" Margin="100,250,0,0" PlaceholderText="******************"></PasswordBox>
+                    <Button x:Name="registerbtn" Content="Register" VerticalAlignment="Top" Margin="0,325,0,0" HorizontalAlignment="Center" Click="Register_submit" Width="200"></Button>
+                    <TextBlock  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,375,0,0" Text="Already have an account?" Foreground="Black"></TextBlock>
+                    <Button x:Name="loginview" Click="LoginView_Click" Content="Login" VerticalAlignment="Top" Margin="0,400,0,0" HorizontalAlignment="Center" Width="200"></Button>
                 </Grid>
             </StackPanel>
-            <StackPanel x:Name="home" Visibility="Collapsed">
+            <StackPanel x:Name="home" Visibility="Visible">
                 <Grid
             Height="550"
         Background="#eeEDEDED"
         Margin="60, 10, 60, 50">
-                    <TextBlock Text="Home" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock Text="Home" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <Button x:Name="showPizza" Content="Pizzas" Width="125" Height="50" VerticalAlignment="Top" Margin="27,100"></Button>
+                    <Button x:Name="showSide" Content="Sides n Desserts" Width="125" Height="50" VerticalAlignment="Top" Margin="27,148"></Button>
+                    <ScrollViewer Height="350" Margin="150, 100" HorizontalScrollMode="Enabled">
+                        <Grid x:Name="Pizzas" BorderBrush="#87A417" BorderThickness="2" ></Grid>
+                    </ScrollViewer>
+                    <ScrollViewer Height="350" Margin="150, 100" HorizontalScrollMode="Enabled">
+                        <Grid x:Name="SidesDesserts" BorderBrush="#87A417" BorderThickness="2"  Visibility="Collapsed"></Grid>
+                    </ScrollViewer>
                 </Grid>
             </StackPanel>
             <StackPanel x:Name="about" Visibility="Collapsed">
@@ -106,7 +114,10 @@
             Height="550"
         Background="#eeEDEDED"
         Margin="60, 10, 60, 50">
-                    <TextBlock Text="Papa Dario's Story" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock Text="Papa Dario's Story" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,500,0" Height="40" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <Image Source="Assets/teenDario.jpg" Height="450" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="600,0,0,30"></Image>
+                    <TextBlock Text="Image: Papa Dario in his teenage years" FontSize="18" VerticalAlignment="Bottom" Foreground="#555" HorizontalAlignment="Center" Margin="600, 0, 0, 25"></TextBlock>
+                    <TextBlock Text="Before Papa Dario was Papa Dario, he was just another teenage entity. This was before time existed. Eventually, he came into his own and became an unspeakable Great Old One, and half brother to Cthulu himself. He spent countless eons in the dark void of terrors, until he was named in a story in 1893 and incarnated as a human. Since then, he has been running a pizzeria, pretending to be his own descendant to avoid suspicion. But why a pizzeria, you might ask? Well, the short answer is that the goals of such an entity are beyond our understanding as mere mortals. It is best we not question him lest we might become figments of imagination, forgotten by all who knew us. Recently, he has learned of the existence of Gulab Jamuns and fallen in love with them. " LineHeight="25" TextAlignment="Justify" LineStackingStrategy="BlockLineHeight" Width="500" FontSize="18" VerticalAlignment="Top" Foreground="#111" HorizontalAlignment="Center" Margin="0, 100, 500, 0" TextWrapping="Wrap" Height="375"></TextBlock>
                 </Grid>
             </StackPanel>
             <StackPanel x:Name="checkout" Visibility="Collapsed">
@@ -117,7 +128,7 @@
                     <TextBlock Text="Checkout" FontSize="30" FontWeight="SemiBold" Foreground="#111" Margin="0,40,100,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
                 </Grid>
             </StackPanel>
-            <StackPanel x:Name="feedback" Visibility="Visible">
+            <StackPanel x:Name="feedback" Visibility="Collapsed">
                 <Grid
             Height="550"
         Background="#eeEDEDED"
@@ -150,6 +161,7 @@
                     <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#87A417"/>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
+            <ThemeShadow x:Key="ImageShadow"/>
         </ResourceDictionary>
     </Page.Resources>
 </Page>

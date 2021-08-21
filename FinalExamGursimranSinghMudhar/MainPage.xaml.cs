@@ -22,13 +22,10 @@ namespace FinalExamGursimranSinghMudhar
         private bool loggedin;
         public bool LoggedIn
         {
-            get
-            {
-                return loggedin;
-            }
+            get => loggedin;
             set
             {
-                this.loggedin = value;
+                loggedin = value;
                 NotifyPropertyChanged();
             }
         }
