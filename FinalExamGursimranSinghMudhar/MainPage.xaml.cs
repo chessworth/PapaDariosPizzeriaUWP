@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.IO;
+using Windows.Storage;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -93,6 +95,23 @@ namespace FinalExamGursimranSinghMudhar
                     Hide_all();
                     home.Visibility = Visibility.Visible;
                     loginNav.Content = "Log Out";
+                    query = "select o.order_id, od.item_id, od.size FROM ORDERS o INNER JOIN ORDER_DETAIL od ON o.Order_ID = od.Order_id WHERE USER_ID = @0 AND o.order_id = (SELECT TOP(1) order_id FROM ORDERS ORDER BY ORDER_TIME DESC); ";
+                    cmd.CommandText = query;
+                    cmd.Parameters["@0"].Value = user.UserID;
+                    reader.Close();
+                    reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        if ((int)await Alert("Return Customer", "Use your previous order?", true) == 1)
+                        {
+                            while (reader.Read())
+                            {
+                                _ = add_to_cart(sender, true, (int)reader[1], (int)reader[2]);
+                                Hide_all();
+                                checkout.Visibility = Visibility.Visible;
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -395,17 +414,38 @@ namespace FinalExamGursimranSinghMudhar
         }
         private async void AddToCart(object sender, RoutedEventArgs e)
         {
-            IFoodItem item = Menu.Find(i => i.FoodID == (int)((Button)sender).Tag);
+           _ = await add_to_cart(sender);
+        }
+        private async Task<bool> add_to_cart(object sender, bool frmatabase = false, int manualid = 0, int manualsize = 0)
+        {
+            IFoodItem item;
             string size;
-            if (Selections.Exists(i => i.Item1.Equals(item.FoodID.ToString())))
+            if (frmatabase)
             {
-                size = Selections.Find(i => i.Item1.Equals(item.FoodID.ToString())).Item2;
+                item = Menu.Find(i => i.FoodID == manualid);
+                if (item is Pizza)
+                {
+                    size = manualsize == 1 ? "s" : manualsize == 2 ? "m" : "l";
+                }
+                else
+                {
+                    size = manualsize == 1 ? "8pcs." : manualsize == 2 ? "16pcs." : "32pcs.";
+                }
             }
             else
             {
-                _ = item is Pizza ? size = "medium" : size = "16pcs.";
+                item = Menu.Find(i => i.FoodID == (int)((Button)sender).Tag);
+
+                if (Selections.Exists(i => i.Item1.Equals(item.FoodID.ToString())))
+                {
+                    size = Selections.Find(i => i.Item1.Equals(item.FoodID.ToString())).Item2;
+                }
+                else
+                {
+                    _ = item is Pizza ? size = "medium" : size = "16pcs.";
+                }
             }
-            if(item is Pizza)
+            if (item is Pizza)
             {
                 item = new Pizza(item.FoodID, item.Name, item.CategoryName, item.BasePrice, item.Description, item.Image.Substring(7), size.ToLower()[0]);
             }
@@ -414,17 +454,19 @@ namespace FinalExamGursimranSinghMudhar
 
                 item = new Sides(item.FoodID, item.Name, item.CategoryName, item.BasePrice, item.Description, item.Image.Substring(7), int.Parse(size.TrimEnd(new char[] { 'p', 'c', 's', '.' })));
             }
-            Cart.Insert(0,item);
+            Cart.Insert(0, item);
             IFoodItem total = Cart[Cart.Count - 1];
             Cart.RemoveAt(Cart.Count - 1);
             total.BasePrice += item.BasePrice;
             total.FinalPrice += LoggedIn ? item.FinalPrice * 0.9 : item.FinalPrice;
             Cart.Add(total);
-            if((int)await Alert("Success","Added to Cart! Proceed to Checkout?", true) == 1)
+            
+            if (!frmatabase && (int)await Alert("Success", "Added to Cart! Proceed to Checkout?", true) == 1)
             {
                 Hide_all();
                 checkout.Visibility = Visibility.Visible;
             }
+            return await Task.FromResult(false);
         }
         private void PopulateCheckout()
         {
@@ -448,7 +490,7 @@ namespace FinalExamGursimranSinghMudhar
 
         private void RemoveFromCart(object sender, RoutedEventArgs e)
         {
-            Cart.Remove(Cart.Single(i => i.FoodID == (int)((Button)sender).Tag));
+            Cart.Remove(Cart.Where(i => i.FoodID == (int)((Button)sender).Tag).FirstOrDefault());
         }
         private bool ShowDelete(object sender)
         {
@@ -458,17 +500,94 @@ namespace FinalExamGursimranSinghMudhar
 
         private async void CheckoutBtn_Click(object sender, RoutedEventArgs e)
         {
-            string[] lines = new string[100];
+            List<string> lines = new List<string>();
+            //add order to database if logged in
+            if (LoggedIn)
+            {
+                SqlConnection conn = new SqlConnection(ConnectionString);
+                SqlCommand cmd = conn.CreateCommand();
+                try
+                {
+                    //deleting records: not added for time saving
+                    //string query = "DELETE FROM ORDERDETAIL WHERE user_id = @0";
+                    //cmd.CommandText = query;
+                    //_ = cmd.Parameters.AddWithValue("@0", user.UserID);
+                    //conn.Open();
+                    //if (cmd.ExecuteNonQuery() >= 0)
+                    //{
+                    string query = "INSERT INTO ORDERS(user_id, total_amt, final_amt) output INSERTED.ORDER_ID values(@0, @1, @2)";
+                    cmd.CommandText = query;
+                    _ = cmd.Parameters.AddWithValue("@0", user.UserID);
+                    _ = cmd.Parameters.AddWithValue("@1", Cart.Sum(i => i.FoodID == 9999 ? 0 : i.FinalPrice));
+                    _ = cmd.Parameters.AddWithValue("@2", Cart.Single(i => i.FoodID == 9999).FinalPrice);
+                    conn.Open();
+                    int orderid = (int)cmd.ExecuteScalar();
+                    if ( orderid > 0)
+                    {
+                        Cart.Where(i => i.FoodID != 9999).ToList().ForEach(i=>
+                        {
+                            query = "INSERT INTO ORDER_DETAIL values(@3, @4, @5)";
+                            cmd.CommandText = query;
+                            if (cmd.Parameters.Contains("@3"))
+                            {
+                                cmd.Parameters["@3"].Value = orderid;
+                            }
+                            else
+                            {
+                                _ = cmd.Parameters.AddWithValue("@3", orderid);
+                            }
+                            if (cmd.Parameters.Contains("@4"))
+                            {
+                                cmd.Parameters["@4"].Value = i.FoodID;
+                            }
+                            else
+                            {
+                                _ = cmd.Parameters.AddWithValue("@4", i.FoodID);
+                            }
+
+                            int size = i is Pizza pizza ? pizza.Size == 's' ? 1 : pizza.Size == 'm' ? 2 : 3 : ((Sides)i).Pieces == 32 ? 3 : ((Sides)i).Pieces / 8;
+                            if (cmd.Parameters.Contains("@5"))
+                            {
+                                cmd.Parameters["@5"].Value = size;
+                            }
+                            else
+                            {
+                                _ = cmd.Parameters.AddWithValue("@5", size);
+                            }
+                            _ = cmd.ExecuteNonQuery();
+                        });
+                    }
+                    else
+                    {
+                        _ = await Alert("Error!", "Order Successful, But not saved in database. Try again or contact an admin. (Error inserting Order)");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _ = await Alert("Error!", ex.Message.ToString());
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    conn.Close();
+                }
+            }
+
             Cart.Where(i => i.FoodID != 9999).ToList().ForEach(i =>
              {
-                 lines.Append($"{i.Name} : {i.FinalPrice}$");
+                 lines.Add($"{i.Name} : {i.FinalPrice}$");
              });
-            lines.Append($"Items bought: {Cart.Count}");
-            lines.Append($"Total Cost: {Cart.Sum(i=> i.FoodID==9999? 0: i.FinalPrice)}");
-            lines.Append($"Total DIscount: {(LoggedIn ? 10 : 0)}%");
-            lines.Append($"Final Amount: {Cart.Single(i => i.FoodID == 9999).FinalPrice}");
-
-            await File.WriteAllLinesAsync("WriteLines.txt", lines);
+            lines.Add($"Items bought: {Cart.Count}");
+            lines.Add($"Total Cost: {Cart.Sum(i=> i.FoodID==9999? 0: i.FinalPrice)}$");
+            lines.Add($"Total DIscount: {(LoggedIn ? 10 : 0)}%");
+            lines.Add($"Final Amount: {Cart.Single(i => i.FoodID == 9999).FinalPrice}$");
+            //couldn't figure out permission for C DIrectory, receipt is stored in Downloads
+            StorageFile receipt =  await DownloadsFolder.CreateFileAsync("receipt.txt", CreationCollisionOption.GenerateUniqueName);
+            await FileIO.WriteLinesAsync(receipt, lines);
+            Cart.Clear();
+            PopulateCheckout();
+            Hide_all();
+            home.Visibility = Visibility.Visible;
         }
     }
 }
